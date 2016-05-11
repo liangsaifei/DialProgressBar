@@ -16,4 +16,4 @@
             
 
             
-![image](https://github.com/liangsaifei/CircleTimeLoading/blob/master/r.gif) 
+![image](https://github.com/liangsaifei/DialProgressBar/blob/master/re.gif) 
