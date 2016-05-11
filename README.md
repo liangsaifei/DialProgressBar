@@ -16,3 +16,4 @@
             
 
             
+![image](https://github.com/liangsaifei/CircleTimeLoading/blob/master/r.gif) 
