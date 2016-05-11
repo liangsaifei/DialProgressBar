@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DialProgressBar">
+        <attr name="progress_color" format="color" />
+        <attr name="max_value" format="integer" />
+        <attr name="duration" format="integer" />
+        <attr name="normal_color" format="color" />
+        <attr name="line_stroke_width" format="integer" />
+        <attr name="progress_line_height" format="dimension" />
+        <attr name="text_size" format="dimension" />
+        <attr name="text_color" format="color" />
+        <attr name="ball_color" format="color" />
+        <attr name="android:icon" type="drawable" />
+
+    </declare-styleable>
+
+
+</resources>
