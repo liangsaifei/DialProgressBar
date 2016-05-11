@@ -1,6 +1,6 @@
 # DialProgressBar
 用法:
- <com.sf.dial.widget.DialProgressBar
+#<com.sf.dial.widget.DialProgressBar
             android:id="@+id/progressBar"
             android:layout_width="200dp"
             android:layout_height="200dp"
