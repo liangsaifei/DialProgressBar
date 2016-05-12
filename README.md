@@ -1,4 +1,6 @@
 # DialProgressBar
+            
+![image](https://github.com/liangsaifei/DialProgressBar/blob/master/re.gif) 
 用法:
 #<com.sf.dial.widget.DialProgressBar
             android:id="@+id/progressBar"
@@ -15,5 +17,4 @@
             app:text_size="30sp" />
             
 
-            
-![image](https://github.com/liangsaifei/DialProgressBar/blob/master/re.gif) 
+
