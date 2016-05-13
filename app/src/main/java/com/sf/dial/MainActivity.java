@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                bar.setValue(progress);
+
             }
 
             @Override
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                bar.setValue(seekBar.getProgress());
             }
         });
 
