@@ -32,6 +32,9 @@ public class DialProgressBar extends View {
 
     private Paint progressPaint;
 
+    private Paint ballPaint;
+
+
     private Paint textPaint;
 
     private int strokeWidth = 3;
@@ -56,6 +59,7 @@ public class DialProgressBar extends View {
     private int duration;
     private int ballColor;
     private Bitmap ballBitmap;
+    private float ballRadius;
 
 
     public DialProgressBar(Context context, AttributeSet attrs) {
@@ -73,8 +77,8 @@ public class DialProgressBar extends View {
         lineHeight = a.getDimension(R.styleable.DialProgressBar_progress_line_height, dip(20));
         initNormalPaint(a);
         initProgressPaint(a);
+        initBallPaint(a);
         initTextPaint(a);
-        initBall(a);
 
         a.recycle();
 
@@ -84,15 +88,15 @@ public class DialProgressBar extends View {
         initAnimation();
     }
 
-    private void initBall(TypedArray a) {
+    private void initBallPaint(TypedArray a) {
+
+        ballPaint = simplePaint();
+        ballPaint.setStyle(Paint.Style.FILL);
         ballColor = a.getColor(R.styleable.DialProgressBar_ball_color, progressPaint.getColor());
-
-        Drawable ballDrawable = a.getDrawable(R.styleable.DialProgressBar_android_icon);
-        if (ballDrawable == null)
-            ballDrawable = getResources().getDrawable(R.drawable.circle_shape);
-
-        ballBitmap = getBitmap(ballDrawable);
+        ballPaint.setColor(ballColor);
+        ballRadius = a.getDimension(R.styleable.DialProgressBar_ball_radius, dip(3));
     }
+
 
     private void initTextPaint(TypedArray a) {
         textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
@@ -183,7 +187,6 @@ public class DialProgressBar extends View {
 
         String value = String.valueOf(maxValue * percent / maxPercent);
 
-//        canvas.drawText(value, centerX - mRect.right / 2, centerY + mRect.bottom / 2, textPaint);
         canvas.drawText(value, centerX - textPaint.measureText(value) / 2, centerY - (textPaint.descent() + textPaint.ascent()) / 2, textPaint);
 
     }
@@ -210,7 +213,9 @@ public class DialProgressBar extends View {
     }
 
     private void drawSmallBall(Canvas canvas) {
-        canvas.drawBitmap(ballBitmap, lineHeight + dip(5), centerY, normalPaint);
+
+        canvas.drawCircle(lineHeight + dip(5) + ballRadius, centerY + ballRadius
+                , ballRadius, ballPaint);
         canvas.rotate(percent / maxPercent * sweepDegree);
         canvas.restore();
     }
@@ -230,16 +235,6 @@ public class DialProgressBar extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         centerX = centerY = w / 2;
-    }
-
-    private Bitmap getBitmap(Drawable drawable) {
-        drawable.setColorFilter(ballColor, PorterDuff.Mode.MULTIPLY);
-        Canvas canvas = new Canvas();
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        canvas.setBitmap(bitmap);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
 

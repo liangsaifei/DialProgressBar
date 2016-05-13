@@ -10,7 +10,8 @@
         <attr name="text_size" format="dimension" />
         <attr name="text_color" format="color" />
         <attr name="ball_color" format="color" />
-        <attr name="android:icon" type="drawable" />
+
+        <attr name="ball_radius" format="dimension"></attr>
 
     </declare-styleable>
 
