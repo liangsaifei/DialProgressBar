@@ -10,8 +10,8 @@
         <attr name="text_size" format="dimension" />
         <attr name="text_color" format="color" />
         <attr name="ball_color" format="color" />
-
-        <attr name="ball_radius" format="dimension"></attr>
+        <attr name="ball_radius" format="dimension"/>
+        <attr name="text_stroke_width" format="integer"/>
 
     </declare-styleable>
 

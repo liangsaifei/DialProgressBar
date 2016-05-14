@@ -27,13 +27,14 @@
             android:layout_height="200dp"
             app:ball_color="@android:color/holo_blue_bright"
             app:ball_radius="5dp"
-            app:duration="2000"
+            app:duration="3000"
             app:line_stroke_width="2"
-            app:max_value="200"
+            app:max_value="300"
             app:normal_color="@android:color/darker_gray"
             app:progress_color="@android:color/holo_blue_bright"
             app:progress_line_height="20dp"
-            app:text_size="30sp" />
+            app:text_size="30sp"
+            app:text_stroke_width="5" />
 
 
     </FrameLayout>

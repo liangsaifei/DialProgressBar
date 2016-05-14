@@ -18,6 +18,8 @@ public class MainActivity extends Activity {
 
         AppCompatSeekBar seekBar = (AppCompatSeekBar) findViewById(R.id.seekBar);
 
+        bar.setValue(50f);
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -31,7 +33,9 @@ public class MainActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                bar.setValue(seekBar.getProgress());
+                float value = (float) seekBar.getProgress() / 100 * bar.getMaxValue();
+
+                bar.setValue(value);
             }
         });
 

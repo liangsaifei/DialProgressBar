@@ -15,6 +15,8 @@ import android.view.animation.LinearInterpolator;
 
 import com.sf.dial.R;
 
+import java.text.DecimalFormat;
+
 
 /**
  * @author Saifei
@@ -34,6 +36,8 @@ public class DialProgressBar extends View {
 
     private Paint textPaint;
 
+    private int textStrokeWidth = 3;
+
     private int strokeWidth = 3;
 
 
@@ -49,12 +53,13 @@ public class DialProgressBar extends View {
     private int maxPercent = 100;
     private int maxValue;
 
-    private int lastPercent;
+    private float lastPercent;
     private ObjectAnimator animator;
 
-    private int percent;
+    private float percent;
     private int totalDuration;
     private float ballRadius;
+    private DecimalFormat decimalFormat;
 
 
     public DialProgressBar(Context context, AttributeSet attrs) {
@@ -63,7 +68,7 @@ public class DialProgressBar extends View {
     }
 
     private void init(Context context, AttributeSet attrs) {
-
+        decimalFormat = new DecimalFormat("0.#");
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DialProgressBar);
         maxValue = a.getInteger(R.styleable.DialProgressBar_max_value, 100);
@@ -94,11 +99,12 @@ public class DialProgressBar extends View {
 
 
     private void initTextPaint(TypedArray a) {
+        textStrokeWidth = a.getInteger(R.styleable.DialProgressBar_text_stroke_width, textStrokeWidth);
         textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
-        textPaint.setStrokeWidth(strokeWidth);
-        textPaint.setTextSize(a.getDimension(R.styleable.DialProgressBar_text_size, 22));
+        textPaint.setStrokeWidth(textStrokeWidth);
+        textPaint.setTextSize(a.getDimension(R.styleable.DialProgressBar_text_size, sp(22)));
         textPaint.setColor(a.getColor(R.styleable.DialProgressBar_text_color, progressPaint.getColor()));
-        textPaint.setStyle(Paint.Style.FILL);
+        textPaint.setStyle(Paint.Style.FILL_AND_STROKE);
 
     }
 
@@ -122,7 +128,8 @@ public class DialProgressBar extends View {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                percent = (int) animation.getAnimatedValue();
+                percent = (float) animation.getAnimatedValue();
+
                 lastPercent = percent;
 
                 invalidate();
@@ -180,9 +187,9 @@ public class DialProgressBar extends View {
 
     private void drawCenterValue(Canvas canvas) {
 
-        String value = String.valueOf(maxValue * percent / maxPercent);
+        float value = maxValue * percent / maxPercent;
 
-        canvas.drawText(value, centerX - textPaint.measureText(value) / 2, centerY - (textPaint.descent() + textPaint.ascent()) / 2, textPaint);
+        canvas.drawText(decimalFormat.format(value), centerX - textPaint.measureText(decimalFormat.format(value)) / 2, centerY - (textPaint.descent() + textPaint.ascent()) / 2, textPaint);
 
     }
 
@@ -190,7 +197,7 @@ public class DialProgressBar extends View {
 
         canvas.save();
         canvas.rotate(-60, centerX, centerY);
-        for (int i = 0; i < percent; i++) {
+        for (float i = 0; i < percent; i++) {
             canvas.drawLine(strokeWidth, centerY, lineHeight, centerY, progressPaint);
             canvas.rotate(perDegree, centerX, centerY);
         }
@@ -215,11 +222,18 @@ public class DialProgressBar extends View {
         canvas.restore();
     }
 
-    public void setValue(int value) {
-        percent = value;
-        animator.setIntValues(lastPercent, percent);
-        int duration = (int) ((float) (Math.abs((percent - lastPercent))) / maxPercent * totalDuration);
-        animator.setDuration(duration);
+    public void setValue(float value) {
+
+
+        if (value >= maxValue) {
+            percent = maxPercent;
+        } else {
+            percent = (value / maxValue * maxPercent);
+        }
+
+        animator.setFloatValues(lastPercent, percent);
+        float duration = (Math.abs((percent - lastPercent))) / maxPercent * totalDuration;
+        animator.setDuration((int) duration);
         animator.start();
     }
 
@@ -227,10 +241,19 @@ public class DialProgressBar extends View {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, getContext().getResources().getDisplayMetrics());
     }
 
+    private float sp(int sp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getContext().getResources().getDisplayMetrics());
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         centerX = centerY = w / 2;
+    }
+
+
+    public int getMaxValue() {
+        return maxValue;
     }
 
 
