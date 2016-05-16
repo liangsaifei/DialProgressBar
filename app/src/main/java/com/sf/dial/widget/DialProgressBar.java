@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 public class DialProgressBar extends View {
 
     private int centerX;
+
     private int centerY;
 
     private Paint normalPaint;
