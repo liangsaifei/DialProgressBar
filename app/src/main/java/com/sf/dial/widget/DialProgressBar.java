@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
  */
 public class DialProgressBar extends View {
 
+
     private int centerX;
 
     private int centerY;
@@ -57,7 +58,7 @@ public class DialProgressBar extends View {
     private int maxValue;
 
     private float lastPercent;
-    private ObjectAnimator animator;
+    private ValueAnimator animator;
 
     private float targetPercent;
     private float currPercent;
@@ -72,29 +73,30 @@ public class DialProgressBar extends View {
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
-        decimalFormat = new DecimalFormat("0.#");
+    public DialProgressBar(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context, attrs);
+    }
 
+    private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.DialProgressBar);
         maxValue = a.getInteger(R.styleable.DialProgressBar_max_value, 100);
         totalDuration = a.getInteger(R.styleable.DialProgressBar_duration, 1000);
         strokeWidth = a.getInteger(R.styleable.DialProgressBar_line_stroke_width, 3);
         lineHeight = a.getDimension(R.styleable.DialProgressBar_progress_line_height, dip(20));
-        initNormalPaint(a);
-        initProgressPaint(a);
-        initBallPaint(a);
-        initTextPaint(a);
 
+
+        setNormalPaint(a);
+        setProgressPaint(a);
+        setBallPaint(a);
+        setTextPaint(a);
         a.recycle();
-
-
         perDegree = sweepDegree / maxPercent;
-
+        decimalFormat = new DecimalFormat("0.#");
         initAnimation();
     }
 
-    private void initBallPaint(TypedArray a) {
-
+    private void setBallPaint(TypedArray a) {
         ballPaint = simplePaint();
         ballPaint.setStyle(Paint.Style.FILL);
         int ballColor = a.getColor(R.styleable.DialProgressBar_ball_color, progressPaint.getColor());
@@ -103,9 +105,9 @@ public class DialProgressBar extends View {
     }
 
 
-    private void initTextPaint(TypedArray a) {
-        textStrokeWidth = a.getInteger(R.styleable.DialProgressBar_text_stroke_width, textStrokeWidth);
+    private void setTextPaint(TypedArray a) {
         textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG);
+        textStrokeWidth = a.getInteger(R.styleable.DialProgressBar_text_stroke_width, textStrokeWidth);
         textPaint.setStrokeWidth(textStrokeWidth);
         textPaint.setTextSize(a.getDimension(R.styleable.DialProgressBar_text_size, sp(22)));
         textPaint.setColor(a.getColor(R.styleable.DialProgressBar_text_color, progressPaint.getColor()));
@@ -113,21 +115,21 @@ public class DialProgressBar extends View {
 
     }
 
-    private void initNormalPaint(TypedArray a) {
-        int normalColor = a.getColor(R.styleable.DialProgressBar_normal_color, Color.GRAY);
+    private void setNormalPaint(TypedArray a) {
         normalPaint = simplePaint();
+        int normalColor = a.getColor(R.styleable.DialProgressBar_normal_color, Color.GRAY);
         normalPaint.setColor(normalColor);
     }
 
-    private void initProgressPaint(TypedArray a) {
-        int progressColor = a.getColor(R.styleable.DialProgressBar_progress_color, Color.GREEN);
+    private void setProgressPaint(TypedArray a) {
         progressPaint = simplePaint();
+        int progressColor = a.getColor(R.styleable.DialProgressBar_progress_color, Color.GREEN);
         progressPaint.setStrokeWidth(4f);
         progressPaint.setColor(progressColor);
     }
 
     private void initAnimation() {
-        animator = new ObjectAnimator();
+        animator = new ValueAnimator();
         animator.setDuration(totalDuration);
         animator.setInterpolator(new LinearInterpolator());
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -170,9 +172,7 @@ public class DialProgressBar extends View {
             heightSize = (int) dip(100);
         }
 
-        int size = Math.max(widthSize, heightSize);
-
-
+        int size = Math.min(widthSize, heightSize);
         setMeasuredDimension(size, size);
 
     }
