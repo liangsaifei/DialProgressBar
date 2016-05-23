@@ -9,6 +9,7 @@ gif效果：
 手头就俩设备，更多问题，请大家发现后提交issue ，我会第一时间解决。
 
 
+
 #用法:
 #<com.sf.dial.widget.DialProgressBar
         android:id="@+id/progressBar"
