@@ -1,6 +1,12 @@
 # DialProgressBar
             
 ![image](https://github.com/liangsaifei/DialProgressBar/blob/master/re.gif) 
+
+sdk适配测试：
+4.2通过，6.0通过。
+手头就俩设备，更多问题，请大家发现后提交issue ，我会第一时间解决。
+
+
 #用法:
 #<com.sf.dial.widget.DialProgressBar
         android:id="@+id/progressBar"
