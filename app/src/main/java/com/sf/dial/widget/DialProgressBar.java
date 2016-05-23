@@ -181,6 +181,7 @@ public class DialProgressBar extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+
         drawNormalLines(canvas);
 
         drawPercentLines(canvas);
@@ -207,7 +208,7 @@ public class DialProgressBar extends View {
         canvas.save();
         canvas.rotate(-60, centerX, centerY);
         for (float i = 0; i < currPercent; i++) {
-            canvas.drawLine(strokeWidth, centerY, lineHeight, centerY, progressPaint);
+            canvas.drawLine(strokeWidth + getPaddingLeft(), centerY, lineHeight + getPaddingLeft(), centerY, progressPaint);
             canvas.rotate(perDegree, centerX, centerY);
         }
 
@@ -217,7 +218,7 @@ public class DialProgressBar extends View {
         canvas.save();
         canvas.rotate(-60, centerX, centerY);
         for (int i = 0; i < maxPercent; i++) { //画普通的
-            canvas.drawLine(strokeWidth, centerY, lineHeight, centerY, normalPaint);
+            canvas.drawLine(strokeWidth + getPaddingLeft(), centerY, lineHeight + getPaddingLeft(), centerY, normalPaint);
             canvas.rotate(perDegree, centerX, centerY);
         }
         canvas.restore();
@@ -225,7 +226,7 @@ public class DialProgressBar extends View {
 
     private void drawSmallBall(Canvas canvas) {
 
-        canvas.drawCircle(lineHeight + dip(5) + ballRadius, centerY + ballRadius
+        canvas.drawCircle(lineHeight + getPaddingLeft() + dip(5) + ballRadius, centerY + ballRadius
                 , ballRadius, ballPaint);
         canvas.rotate(currPercent / maxPercent * sweepDegree);
         canvas.restore();
@@ -266,5 +267,15 @@ public class DialProgressBar extends View {
 
     private float sp(int sp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, getContext().getResources().getDisplayMetrics());
+    }
+
+
+    public void setPaintAlpha(int alpha) {
+        normalPaint.setAlpha(alpha);
+        ballPaint.setAlpha(alpha);
+        progressPaint.setAlpha(alpha);
+        textPaint.setAlpha(alpha);
+        invalidate();
+
     }
 }
